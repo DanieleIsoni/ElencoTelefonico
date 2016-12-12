@@ -18,9 +18,9 @@ public class IncaricoListAdapter extends ArrayAdapter<Incarico> {
 
     public IncaricoListAdapter(Context context, int resource, List<Incarico> objects) {
         super(context, resource, objects);
-        incarichi = objects;
-        incarichiOrig = new ArrayList<>();
-        incarichiOrig.addAll(incarichi);
+        incarichiOrig = objects;
+        incarichi = new ArrayList<>();
+        incarichi.addAll(incarichiOrig);
     }
 
     @NonNull

@@ -1,4 +1,4 @@
-package it.daniso.elencotelefonico;
+/*package it.daniso.elencotelefonico;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,4 +40,4 @@ public final class DataProvider {
         incaricoList.add(item);
         incaricoMap.put(nomeIncarico, item);
     }
-}
+}*/

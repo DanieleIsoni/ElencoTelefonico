@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import static it.daniso.elencotelefonico.MainActivity.incarichi;
+
 public class DetailActivity extends AppCompatActivity {
 
     @Override
@@ -19,7 +21,7 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         String nomeIncarico = getIntent().getStringExtra(MainActivity.INCARICO_ID);
-        Incarico incarico = DataProvider.incaricoMap.get(nomeIncarico);
+        Incarico incarico = findIncarico(nomeIncarico, 0, incarichi.size()-1);
 
 
         setTitle(incarico.getNomeIncarico());
@@ -31,6 +33,16 @@ public class DetailActivity extends AppCompatActivity {
         email.setText(incarico.person.getEmail());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private Incarico findIncarico(String nomeIncarico, int i, int f) {
+        int m = (i+f)/2;
+        if(incarichi.get(m).getNomeIncarico() == nomeIncarico)
+            return incarichi.get(m);
+
+        return incarichi.get(m).getNomeIncarico().compareTo(nomeIncarico) == -1 ?
+                findIncarico(nomeIncarico, i, m) :
+                findIncarico(nomeIncarico, m, f);
     }
 
 }

@@ -6,9 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
@@ -102,7 +99,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void getAllPersone(){
-        String selectQuery = "SELECT * FROM " + TABLE_PERSONE;
+        String selectQuery = "SELECT  * FROM " + TABLE_PERSONE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -120,10 +117,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public List<Incarico> getAllIncarichi(){
-        List<Incarico> incarichiList = new ArrayList<>();
-
-        String selectQuery = "SELECT * FROM " + TABLE_INCARICHI;
+    public void getAllIncarichi(){
+        String selectQuery = "SELECT  * FROM " + TABLE_INCARICHI;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -134,9 +129,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 incarico.setNomeIncarico(cursor.getString(1));
                 incarico.setPerson(cursor.getString(2));
 
-                incarichiList.add(incarico);
+                MainActivity.incarichi.add(incarico);
             } while (cursor.moveToNext());
         }
-        return incarichiList;
     }
 }

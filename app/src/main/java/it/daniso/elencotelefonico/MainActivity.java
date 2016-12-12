@@ -19,7 +19,6 @@ import android.widget.ListView;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        incarichi = db.getAllIncarichi();
+        db.getAllIncarichi();
         Collections.sort(incarichi, new ComparatorIncarichi());
+        db.getAllPersone();
+        Collections.sort(persone, new ComparatorPerson());
 
         adapter = new IncaricoListAdapter(this, R.layout.list_item, incarichi);
         lv = (ListView) findViewById(R.id.lista_personale);

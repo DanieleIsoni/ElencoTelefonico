@@ -1,5 +1,7 @@
 package it.daniso.elencotelefonico;
 
+import static it.daniso.elencotelefonico.MainActivity.persone;
+
 public class Incarico {
     private String nomeIncarico;
     public Person person;
@@ -24,10 +26,14 @@ public class Incarico {
     }
 
     public void setPerson(String personId) {
-        for(Person p : MainActivity.persone){
-            if(p.getCodFiscale() == personId){
-                this.person = p;
-            }
-        }
+        this.person = findPerson(personId, 0, persone.size()-1);
+    }
+
+    private Person findPerson(String personId, int i, int f){
+        int m = (i+f)/2;
+        if(persone.get(m).getCodFiscale() == personId)
+            return persone.get(m);
+
+        return persone.get(m).getCodFiscale().compareTo(personId) == -1 ? findPerson(personId, i, m) : findPerson(personId, m, f);
     }
 }
