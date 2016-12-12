@@ -1,43 +1,33 @@
 package it.daniso.elencotelefonico;
 
 public class Incarico {
-    private String incaricoId;
     private String nomeIncarico;
-    private String name;
-    private String surname;
-    private String telNumber;
-    private String email;
+    public Person person;
 
-    public Incarico(String incaricoId, String nomeIncarico, String name, String surname, String telNumber, String email){
-        this.incaricoId = incaricoId;
+    public Incarico(){}
+
+    public Incarico(String nomeIncarico, Person person){
         this.nomeIncarico = nomeIncarico;
-        this.name=name;
-        this.surname=surname;
-        this.telNumber="+39 0461 9 "+telNumber;
-        this.email=email+"@comalp.esercito.difesa.it";
-    }
-
-    public String getIncaricoId() {
-        return incaricoId;
+        this.person = person;
     }
 
     public String getNomeIncarico() {
         return nomeIncarico;
     }
 
-    public String getTelNumber() {
-        return telNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public String getNomePersona(){
-        return name+" "+surname;
+        return person.getName()+" "+person.getSurname();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNomeIncarico(String nomeIncarico) {
+        this.nomeIncarico = nomeIncarico;
+    }
+
+    public void setPerson(String personId) {
+        for(Person p : MainActivity.persone){
+            if(p.getCodFiscale() == personId){
+                this.person = p;
+            }
+        }
     }
 }

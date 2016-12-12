@@ -18,15 +18,19 @@ import android.widget.ListView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String INCARICO_ID = "INCARICO_ID";
-    private List<Incarico> incarichi = DataProvider.incaricoList;
+    public static List<Incarico> incarichi;
+    public static List<Person> persone;
     IncaricoListAdapter adapter;
     ListView lv;
+    DatabaseHandler db = new DatabaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        incarichi = db.getAllIncarichi();
+        Collections.sort(incarichi, new ComparatorIncarichi());
 
         adapter = new IncaricoListAdapter(this, R.layout.list_item, incarichi);
         lv = (ListView) findViewById(R.id.lista_personale);
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
 
                 Incarico incarico = incarichi.get(i);
-                intent.putExtra(INCARICO_ID, incarico.getIncaricoId());
+                intent.putExtra(INCARICO_ID, incarico.getNomeIncarico());
 
                 startActivity(intent);
             }
@@ -73,6 +80,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        menu.findItem(R.id.action_add).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                System.out.println("add");
+                return false;
+            }
+        });
 
         return true;
     }

@@ -11,53 +11,33 @@ public final class DataProvider {
     public static Map<String,Incarico> incaricoMap = new HashMap<>();
 
     static {
-        addIncarico("01", "Rilascio Documenti di Riconoscimento",
+        addIncarico("Rilascio Documenti di Riconoscimento", "snigfr02a59v647g",
                     "Gianfranco", "Isoni", "40924", "addoc5terr");
-        addIncarico("02", "02Incarico",
+        addIncarico("02Incarico", "snidnl96m21l378n",
                     "Daniele", "Isoni", "1555", "email");
-        addIncarico("04", "03Incarico",
+        addIncarico("03Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
-        addIncarico("05", "03Incarico",
+        addIncarico("04Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
-        addIncarico("06", "03Incarico",
+        addIncarico("05Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
-        addIncarico("07", "03Incarico",
+        addIncarico("06Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
-        addIncarico("08", "03Incarico",
+        addIncarico("07Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
-        addIncarico("09", "03Incarico",
+        addIncarico("08Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
-        addIncarico("10", "03Incarico",
+        addIncarico("09Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
-        addIncarico("11", "03Incarico",
+        addIncarico("10Incarico", "nmpcgp01l02l000a",
                     "Nome persona", "Cognome persona", "1555", "email");
     }
 
-    private static void addIncarico(String incaricoId, String nomeIncarico, String name,
+    private static void addIncarico(String nomeIncarico, String codFiscale, String name,
                                     String surname, String telNumber, String email) {
-        Incarico item = new Incarico(incaricoId, nomeIncarico, name, surname, telNumber, email);
+        Person person = new Person(codFiscale, name, surname, telNumber, email);
+        Incarico item = new Incarico(nomeIncarico, person);
         incaricoList.add(item);
-        incaricoMap.put(incaricoId, item);
-    }
-
-    public static List<String> getProductNames() {
-        List<String> list = new ArrayList<>();
-        for (Incarico incarico: incaricoList) {
-            list.add(incarico.getNomeIncarico());
-        }
-        return list;
-    }
-
-    public static List<Incarico> getFilteredList(String searchString) {
-
-        List<Incarico> filteredList = new ArrayList<>();
-        for (Incarico incarico: incaricoList) {
-            if (incarico.getIncaricoId().contains(searchString)) {
-                filteredList.add(incarico);
-            }
-        }
-
-        return filteredList;
-
+        incaricoMap.put(nomeIncarico, item);
     }
 }

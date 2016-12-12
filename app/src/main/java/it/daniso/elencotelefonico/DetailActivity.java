@@ -1,5 +1,6 @@
 package it.daniso.elencotelefonico;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,17 +18,17 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String incaricoId = getIntent().getStringExtra(MainActivity.INCARICO_ID);
-        Incarico incarico = DataProvider.incaricoMap.get(incaricoId);
+        String nomeIncarico = getIntent().getStringExtra(MainActivity.INCARICO_ID);
+        Incarico incarico = DataProvider.incaricoMap.get(nomeIncarico);
 
-        TextView tIncarico = (TextView) findViewById(R.id.incaricoTV);
-        tIncarico.setText(incarico.getNomeIncarico());
+
+        setTitle(incarico.getNomeIncarico());
         TextView nome_cognome = (TextView) findViewById(R.id.nome_cognomeTV);
         nome_cognome.setText(incarico.getNomePersona());
         TextView telNumber = (TextView) findViewById(R.id.telNumberTV);
-        telNumber.setText(incarico.getTelNumber());
+        telNumber.setText(incarico.person.getTelNumber());
         TextView email = (TextView) findViewById(R.id.emailTV);
-        email.setText(incarico.getEmail());
+        email.setText(incarico.person.getEmail());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
