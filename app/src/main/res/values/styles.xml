@@ -17,4 +17,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="EditTextCustomHolo" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">#9e9e9e</item>
+    </style>
 </resources>

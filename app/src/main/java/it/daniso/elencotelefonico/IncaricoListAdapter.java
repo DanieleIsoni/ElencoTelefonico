@@ -18,9 +18,9 @@ public class IncaricoListAdapter extends ArrayAdapter<Incarico> {
 
     public IncaricoListAdapter(Context context, int resource, List<Incarico> objects) {
         super(context, resource, objects);
-        incarichiOrig = objects;
-        incarichi = new ArrayList<>();
-        incarichi.addAll(incarichiOrig);
+        incarichi = objects;
+        incarichiOrig = new ArrayList<>();
+        incarichiOrig.addAll(incarichi);
     }
 
     @NonNull
@@ -33,13 +33,19 @@ public class IncaricoListAdapter extends ArrayAdapter<Incarico> {
 
         Incarico incarico = incarichi.get(position);
 
-        TextView nomeIncarico = (TextView) convertView.findViewById(R.id.nomeIncarico);
+        TextView nomeIncarico = (TextView) convertView.findViewById(R.id.itemTitle);
         nomeIncarico.setText(incarico.getNomeIncarico());
 
-        TextView nomePersona = (TextView) convertView.findViewById(R.id.nomePersona);
+        TextView nomePersona = (TextView) convertView.findViewById(R.id.itemSubtitle);
         nomePersona.setText(incarico.getNomePersona());
 
         return convertView;
+    }
+
+    public void myNotifyDataSetChanged() {
+        notifyDataSetChanged();
+        incarichiOrig.clear();
+        incarichiOrig.addAll(incarichi);
     }
 
     public void filter(String charText) {
@@ -49,7 +55,7 @@ public class IncaricoListAdapter extends ArrayAdapter<Incarico> {
             incarichi.addAll(incarichiOrig);
         } else {
             for (Incarico inc : incarichiOrig) {
-                if (inc.getNomeIncarico().toLowerCase().contains(charText) || inc.getNomePersona().toLowerCase().contains(charText)) {
+                if (inc.getNomeIncarico().toLowerCase().startsWith(charText) || inc.getNomePersona().toLowerCase().startsWith(charText)) {
                     incarichi.add(inc);
                 }
             }

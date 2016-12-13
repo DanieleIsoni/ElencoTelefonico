@@ -4,4 +4,6 @@
     <string name="srch">Search</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="search_hint">Cerca incarico o dipendente</string>
+    <string name="title_activity_add">AddActivity</string>
+    <string name="nome_incarico">Nome Incarico</string>
 </resources>

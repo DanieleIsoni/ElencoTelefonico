@@ -3,8 +3,6 @@ package it.daniso.elencotelefonico;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -13,20 +11,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import static it.daniso.elencotelefonico.Incarico.incarichi;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String INCARICO_ID = "INCARICO_ID";
-    public static List<Incarico> incarichi;
-    public static List<Person> persone;
     IncaricoListAdapter adapter;
     ListView lv;
     DatabaseHandler db = new DatabaseHandler(this);
@@ -38,10 +29,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db.getAllIncarichi();
-        Collections.sort(incarichi, new ComparatorIncarichi());
+        db.insertPerson("snidnl96m21l378n", "Daniele", "Isoni", "44400", "ciao");
         db.getAllPersone();
-        Collections.sort(persone, new ComparatorPerson());
+
+        db.insertIncarico("Lavoro", "snidnl96m21l378n");
+        db.getAllIncarichi();
+
 
         adapter = new IncaricoListAdapter(this, R.layout.list_item, incarichi);
         lv = (ListView) findViewById(R.id.lista_personale);
@@ -84,7 +77,12 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.action_add).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                System.out.println("add");
+                startActivity(new Intent(MainActivity.this, AddActivity.class));
+                /*db.insertPerson("abcd", "Riccardo", "Capraro", "777", "bye");
+                db.getAllPersone();
+                db.insertIncarico("saltare", "abcd");
+                db.getAllIncarichi();*/
+                adapter.myNotifyDataSetChanged();
                 return false;
             }
         });

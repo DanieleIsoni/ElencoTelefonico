@@ -1,16 +1,30 @@
 package it.daniso.elencotelefonico;
 
-import static it.daniso.elencotelefonico.MainActivity.persone;
+import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static it.daniso.elencotelefonico.Person.persone;
 
 public class Incarico {
     private String nomeIncarico;
     public Person person;
+    public static List<Incarico> incarichi = new ArrayList<>();
+    public static Map<String, Incarico> incarichiMap = new HashMap<>();
 
     public Incarico(){}
 
     public Incarico(String nomeIncarico, Person person){
         this.nomeIncarico = nomeIncarico;
         this.person = person;
+    }
+
+    public Incarico(String nomeIncarico, String personId){
+        this.nomeIncarico = nomeIncarico;
+        setPerson(personId);
     }
 
     public String getNomeIncarico() {
@@ -26,14 +40,6 @@ public class Incarico {
     }
 
     public void setPerson(String personId) {
-        this.person = findPerson(personId, 0, persone.size()-1);
-    }
-
-    private Person findPerson(String personId, int i, int f){
-        int m = (i+f)/2;
-        if(persone.get(m).getCodFiscale() == personId)
-            return persone.get(m);
-
-        return persone.get(m).getCodFiscale().compareTo(personId) == -1 ? findPerson(personId, i, m) : findPerson(personId, m, f);
+        this.person = persone.get(personId);
     }
 }

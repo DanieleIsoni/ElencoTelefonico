@@ -1,5 +1,10 @@
 package it.daniso.elencotelefonico;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Daniso on 12/12/2016.
  */
@@ -10,6 +15,8 @@ public class Person {
     private String surname;
     private String telNumber;
     private String email;
+    public static List<Person> personeList = new ArrayList<>();
+    public static Map<String,Person> persone = new HashMap<>();
 
     public Person(){}
 
@@ -54,10 +61,10 @@ public class Person {
     }
 
     public void setTelNumber(String telNumber) {
-        this.telNumber = telNumber;
+        this.telNumber = "+39 0461 9 "+telNumber;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email+"@comalp.esercito.difesa.it";
     }
 }

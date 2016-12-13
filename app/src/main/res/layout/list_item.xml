@@ -15,19 +15,19 @@
         android:layout_marginStart="5dp" >
 
         <TextView
-            android:id="@+id/nomeIncarico"
+            android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nome Incarico"
-            android:textSize="18sp" />
+            android:textSize="@dimen/item_title_size" />
 
         <TextView
-            android:id="@+id/nomePersona"
+            android:id="@+id/itemSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nome Cognome"
-            android:textSize="13sp"
-            android:paddingLeft="5dp"/>
+            android:textSize="@dimen/item_subtitle_size"
+            android:paddingLeft="3dp"/>
 
     </LinearLayout>
 
