@@ -19,13 +19,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/nome_incarico"
-        android:theme="@style/EditTextCustomHolo" />
+        android:theme="@style/EditTextCustomHolo"
+        android:inputType="textCapWords"/>
 
-    <ExpandableListView
-        android:id="@+id/exp_view"
+    <Spinner
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </ExpandableListView>
+    </Spinner>
 
+    <EditText
+        android:id="@+id/inputCodFiscale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/cod_fiscale_persona"
+        android:theme="@style/EditTextCustomHolo"
+        android:inputType="textCapCharacters"/>
 
+    <EditText
+        android:id="@+id/inputNome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/nome_persona"
+        android:theme="@style/EditTextCustomHolo"
+        android:inputType="textCapWords"/>
+
+    <EditText
+        android:id="@+id/inputCognome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/cognome_persona"
+        android:theme="@style/EditTextCustomHolo"
+        android:inputType="textCapWords"/>
+
+    <EditText
+        android:id="@+id/inputTelNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/tel_num_persona"
+        android:theme="@style/EditTextCustomHolo"
+        android:inputType="phone"/>
+
+    <EditText
+        android:id="@+id/inputEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email_persona"
+        android:theme="@style/EditTextCustomHolo"
+        android:inputType="textEmailAddress" />
 </LinearLayout>

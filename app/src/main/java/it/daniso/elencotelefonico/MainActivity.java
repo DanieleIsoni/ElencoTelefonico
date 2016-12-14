@@ -12,15 +12,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import static it.daniso.elencotelefonico.Incarico.incarichi;
+import static it.daniso.elencotelefonico.Incarico.incarichiMap;
+import static it.daniso.elencotelefonico.Person.persone;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String INCARICO_ID = "INCARICO_ID";
+    public static final String DATA = "DATA";
+    public static final int ADD_ITEM_REQUEST = 1;
     IncaricoListAdapter adapter;
     ListView lv;
     DatabaseHandler db = new DatabaseHandler(this);
+    List<String> datas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db.insertPerson("snidnl96m21l378n", "Daniele", "Isoni", "44400", "ciao");
+        //db.insertPerson("snidnl96m21l378n", "Daniele", "Isoni", "44400", "ciao");
         db.getAllPersone();
 
-        db.insertIncarico("Lavoro", "snidnl96m21l378n");
+        //db.insertIncarico("Lavoro", "snidnl96m21l378n");
         db.getAllIncarichi();
 
 
@@ -51,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
     }
 
@@ -77,16 +87,34 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.action_add).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                startActivity(new Intent(MainActivity.this, AddActivity.class));
-                /*db.insertPerson("abcd", "Riccardo", "Capraro", "777", "bye");
-                db.getAllPersone();
-                db.insertIncarico("saltare", "abcd");
-                db.getAllIncarichi();*/
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                startActivityForResult(intent, ADD_ITEM_REQUEST);
                 adapter.myNotifyDataSetChanged();
                 return false;
             }
         });
 
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == ADD_ITEM_REQUEST){
+            if(resultCode == RESULT_OK){
+                datas = data.getStringArrayListExtra(DATA);
+                if(!persone.containsKey(datas.get(1).toLowerCase())) {
+                    db.insertPerson(datas.get(1), datas.get(2), datas.get(3), datas.get(4), datas.get(5));
+                    db.getAllPersone();
+                }
+                if(!incarichiMap.containsKey(datas.get(0).toLowerCase())) {
+                    db.insertIncarico(datas.get(0), datas.get(1));
+                    db.getAllIncarichi();
+                } else {
+                    Toast.makeText(this,"Incarico già esistente", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this,"Non tutti i campi sono stati compilati", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

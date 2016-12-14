@@ -12,20 +12,21 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp" >
+        android:layout_marginStart="5dp"
+        android:id="@+id/llitem">
 
         <TextView
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome Incarico"
+            android:text=""
             android:textSize="@dimen/item_title_size" />
 
         <TextView
             android:id="@+id/itemSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome Cognome"
+            android:text=""
             android:textSize="@dimen/item_subtitle_size"
             android:paddingLeft="3dp"/>
 

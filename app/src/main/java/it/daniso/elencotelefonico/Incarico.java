@@ -1,7 +1,5 @@
 package it.daniso.elencotelefonico;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +38,6 @@ public class Incarico {
     }
 
     public void setPerson(String personId) {
-        this.person = persone.get(personId);
+        this.person = persone.get(personId.toLowerCase());
     }
 }

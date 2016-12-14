@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.SystemClock;
 
 import static it.daniso.elencotelefonico.Incarico.incarichi;
 import static it.daniso.elencotelefonico.Incarico.incarichiMap;
@@ -35,6 +34,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NOME = "nome";
     private static final String PERSON_ID = KEY_PERSON_ID;
 
+    //Costanti
+    public static final String DEFAULT = "SELEZIONA";
+
 
     public DatabaseHandler(Context context) {
         super( context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,6 +62,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_PERSONE_TABLE);
         db.execSQL(CREATE_INCARICHI_TABLE);
 
+        /*ContentValues cv = new ContentValues();
+        cv.put(KEY_PERSON_ID, "");
+        cv.put(P_NOME, "");
+        cv.put(P_COGNOME, "");
+        cv.put(P_TEL_NUM, "");
+        cv.put(P_EMAIL, "");
+
+        db.insert(TABLE_PERSONE, null, cv);*/
     }
 
 
@@ -125,6 +135,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()){
             personeList.clear();
+            personeList.add(new Person(DEFAULT, "Select", "Item", "", ""));
             do{
                 Person person = new Person();
                 person.setCodFiscale(cursor.getString(0));
@@ -133,7 +144,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 person.setTelNumber(cursor.getString(3));
                 person.setEmail(cursor.getString(4));
 
-                persone.put(person.getCodFiscale(), person);
+                persone.put(person.getCodFiscale().toLowerCase(), person);
                 personeList.add(person);
             } while (cursor.moveToNext());
         }
@@ -153,7 +164,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 incarico.setPerson(cursor.getString(1));
 
                 incarichi.add(incarico);
-                incarichiMap.put(incarico.getNomeIncarico(), incarico);
+                incarichiMap.put(incarico.getNomeIncarico().toLowerCase(), incarico);
             } while (cursor.moveToNext());
         }
     }

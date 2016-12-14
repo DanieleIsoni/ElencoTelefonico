@@ -24,8 +24,8 @@ public class Person {
         this.codFiscale = codFiscale;
         this.name=name;
         this.surname=surname;
-        this.telNumber="+39 0461 9 "+telNumber;
-        this.email=email+"@comalp.esercito.difesa.it";
+        this.telNumber=telNumber;
+        this.email=email;
     }
 
     public String getCodFiscale() {
@@ -61,10 +61,10 @@ public class Person {
     }
 
     public void setTelNumber(String telNumber) {
-        this.telNumber = "+39 0461 9 "+telNumber;
+        this.telNumber = telNumber;
     }
 
     public void setEmail(String email) {
-        this.email = email+"@comalp.esercito.difesa.it";
+        this.email = email;
     }
 }
