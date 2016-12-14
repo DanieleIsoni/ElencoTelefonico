@@ -15,40 +15,14 @@
     tools:showIn="@layout/activity_detail">
 
     <LinearLayout
-        android:id="@+id/incaricoLL"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingLeft="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Incarico:"
-            android:textSize="@dimen/detail_size"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/incaricoTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NomeIncarico"
-            android:textSize="@dimen/detail_size"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/nome_cognomeLL"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/incaricoLL"
-        android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="10dp">
+        android:paddingTop="@dimen/detail_padding"
+        android:paddingBottom="@dimen/detail_padding">
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,12 +44,12 @@
     <LinearLayout
         android:id="@+id/telNumberLL"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/nome_cognomeLL"
-        android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="10dp">
+        android:paddingTop="@dimen/detail_padding"
+        android:paddingBottom="@dimen/detail_padding">
 
         <TextView
             android:layout_width="wrap_content"
@@ -98,12 +72,12 @@
     <LinearLayout
         android:id="@+id/emailLL"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/telNumberLL"
-        android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="10dp">
+        android:paddingTop="@dimen/detail_padding"
+        android:paddingBottom="@dimen/detail_padding">
 
         <TextView
             android:layout_width="wrap_content"

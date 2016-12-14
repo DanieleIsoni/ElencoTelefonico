@@ -1,43 +1,43 @@
 package it.daniso.elencotelefonico;
 
-public class Incarico {
-    private String incaricoId;
-    private String nomeIncarico;
-    private String name;
-    private String surname;
-    private String telNumber;
-    private String email;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    public Incarico(String incaricoId, String nomeIncarico, String name, String surname, String telNumber, String email){
-        this.incaricoId = incaricoId;
+import static it.daniso.elencotelefonico.Person.persone;
+
+public class Incarico {
+    private String nomeIncarico;
+    public Person person;
+    public static List<Incarico> incarichi = new ArrayList<>();
+    public static Map<String, Incarico> incarichiMap = new HashMap<>();
+
+    public Incarico(){}
+
+    public Incarico(String nomeIncarico, Person person){
         this.nomeIncarico = nomeIncarico;
-        this.name=name;
-        this.surname=surname;
-        this.telNumber="+39 0461 9 "+telNumber;
-        this.email=email+"@comalp.esercito.difesa.it";
+        this.person = person;
     }
 
-    public String getIncaricoId() {
-        return incaricoId;
+    public Incarico(String nomeIncarico, String personId){
+        this.nomeIncarico = nomeIncarico;
+        setPerson(personId);
     }
 
     public String getNomeIncarico() {
         return nomeIncarico;
     }
 
-    public String getTelNumber() {
-        return telNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public String getNomePersona(){
-        return name+" "+surname;
+        return person.getName()+" "+person.getSurname();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNomeIncarico(String nomeIncarico) {
+        this.nomeIncarico = nomeIncarico;
+    }
+
+    public void setPerson(String personId) {
+        this.person = persone.get(personId.toLowerCase());
     }
 }

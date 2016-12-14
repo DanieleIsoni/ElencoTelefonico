@@ -5,28 +5,30 @@
     android:paddingBottom="10dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:id="@+id/llitem">
 
         <TextView
-            android:id="@+id/nomeIncarico"
+            android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome Incarico"
-            android:textSize="24sp" />
+            android:text=""
+            android:textSize="@dimen/item_title_size" />
 
         <TextView
-            android:id="@+id/nomePersona"
+            android:id="@+id/itemSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome Cognome"
-            android:textSize="20sp"
-            android:paddingLeft="5dp"/>
+            android:text=""
+            android:textSize="@dimen/item_subtitle_size"
+            android:paddingLeft="3dp"/>
 
     </LinearLayout>
 
