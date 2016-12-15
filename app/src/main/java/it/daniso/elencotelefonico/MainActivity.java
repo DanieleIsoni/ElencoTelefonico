@@ -7,6 +7,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ListView lv;
     DatabaseHandler db = new DatabaseHandler(this);
     List<String> datas;
-
+    Bundle savedInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        this.savedInstance = savedInstanceState;
 
         //db.insertPerson("snidnl96m21l378n", "Daniele", "Isoni", "44400", "ciao");
         db.getAllPersone();
@@ -55,13 +58,47 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
 
                 Incarico incarico = incarichi.get(i);
-                intent.putExtra(INCARICO_ID, incarico.getNomeIncarico());
+                intent.putExtra(INCARICO_ID, incarico.getIncaricoId());
 
                 startActivity(intent);
             }
         });
 
+        registerForContextMenu(lv);
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.lista_personale) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_context, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()) {
+            case R.id.cancella:
+                db.removeIncarico(incarichi.get(info.position).getIncaricoId());
+                incarichiMap.remove(incarichi.get(info.position).getIncaricoId());
+                adapter.getIncarichi().remove(incarichi.get(info.position));
+                db.getAllPersone();
+                db.getAllIncarichi();
+                adapter.myNotifyDataSetChanged();
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onContextMenuClosed(Menu menu) {
+        super.onContextMenuClosed(menu);
+        adapter.myNotifyDataSetChanged();
     }
 
     @Override
@@ -89,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent intent = new Intent(MainActivity.this, AddActivity.class);
                 startActivityForResult(intent, ADD_ITEM_REQUEST);
-                adapter.myNotifyDataSetChanged();
+
                 return false;
             }
         });
@@ -102,16 +139,17 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == ADD_ITEM_REQUEST){
             if(resultCode == RESULT_OK){
                 datas = data.getStringArrayListExtra(DATA);
-                if(!persone.containsKey(datas.get(1).toLowerCase())) {
-                    db.insertPerson(datas.get(1), datas.get(2), datas.get(3), datas.get(4), datas.get(5));
+                if(!persone.containsKey(datas.get(2).toLowerCase())) {
+                    db.insertPerson(datas.get(2), datas.get(3), datas.get(4), datas.get(5), datas.get(6));
                     db.getAllPersone();
                 }
                 if(!incarichiMap.containsKey(datas.get(0).toLowerCase())) {
-                    db.insertIncarico(datas.get(0), datas.get(1));
+                    db.insertIncarico(datas.get(0), datas.get(1), datas.get(2));
                     db.getAllIncarichi();
                 } else {
                     Toast.makeText(this,"Incarico già esistente", Toast.LENGTH_LONG).show();
                 }
+                adapter.myNotifyDataSetChanged();
             } else {
                 Toast.makeText(this,"Non tutti i campi sono stati compilati", Toast.LENGTH_LONG).show();
             }

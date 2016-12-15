@@ -86,6 +86,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 ArrayList<String> result = new ArrayList<>();
+                result.add(inc.getText().length() == 0 ? null : inc.getText().toString().toLowerCase());
                 result.add(inc.getText().length() == 0 ? null : inc.getText().toString());
                 result.add(codFiscale.getText().length() == 0 ? null : codFiscale.getText().toString());
                 result.add(name.getText().length() == 0 ? null : name.getText().toString());
@@ -93,8 +94,8 @@ public class AddActivity extends AppCompatActivity {
                 result.add(telNum.getText().length() == 0 ? null : telNum.getText().toString());
                 result.add(email.getText().length() == 0 ? null : email.getText().toString());
 
-                if(result.size() == 6 && result.get(0) != null && result.get(1) != null && result.get(2) != null &&
-                        result.get(3) != null && result.get(4) != null && result.get(5) != null) {
+                if(result.size() == 7 && result.get(0) != null && result.get(1) != null && result.get(2) != null &&
+                        result.get(3) != null && result.get(4) != null && result.get(5) != null && result.get(6) != null) {
                     Intent returnIntent = new Intent();
                     returnIntent.putStringArrayListExtra(MainActivity.DATA, result);
                     setResult(Activity.RESULT_OK, returnIntent);

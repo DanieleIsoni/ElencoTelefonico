@@ -63,4 +63,7 @@ public class IncaricoListAdapter extends ArrayAdapter<Incarico> {
         notifyDataSetChanged();
     }
 
+    public List<Incarico> getIncarichi() {
+        return incarichi;
+    }
 }

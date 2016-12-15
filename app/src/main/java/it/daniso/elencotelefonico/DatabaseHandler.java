@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import static it.daniso.elencotelefonico.Incarico.incarichi;
 import static it.daniso.elencotelefonico.Incarico.incarichiMap;
@@ -31,7 +32,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String P_EMAIL = "email";
 
     //Incarichi table columns names
-    private static final String KEY_NOME = "nome";
+    private static final String KEY_INCARICO = "incaricoId";
+    private static final String NOME_INCARICO = "nome";
     private static final String PERSON_ID = KEY_PERSON_ID;
 
     //Costanti
@@ -54,22 +56,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + P_EMAIL + " TEXT" + ")";
 
         String CREATE_INCARICHI_TABLE = "CREATE TABLE " + TABLE_INCARICHI + "("
-                + KEY_NOME + " TEXT PRIMARY KEY, "
+                + KEY_INCARICO + " TEXT PRIMARY KEY, "
+                + NOME_INCARICO + " TEXT,"
                 + PERSON_ID + " TEXT,"
                 + " FOREIGN KEY(" + PERSON_ID + ") REFERENCES " + TABLE_PERSONE + "(" + KEY_PERSON_ID + ") ON DELETE CASCADE ON UPDATE CASCADE" + ")";
 
 
         db.execSQL(CREATE_PERSONE_TABLE);
         db.execSQL(CREATE_INCARICHI_TABLE);
-
-        /*ContentValues cv = new ContentValues();
-        cv.put(KEY_PERSON_ID, "");
-        cv.put(P_NOME, "");
-        cv.put(P_COGNOME, "");
-        cv.put(P_TEL_NUM, "");
-        cv.put(P_EMAIL, "");
-
-        db.insert(TABLE_PERSONE, null, cv);*/
     }
 
 
@@ -100,17 +94,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertIncarico(String nomeIncarico, String codFiscale){
+    public void insertIncarico(String incaricoId, String nomeIncarico, String codFiscale){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put(KEY_NOME, nomeIncarico);
+        cv.put(KEY_INCARICO, incaricoId);
+        cv.put(NOME_INCARICO, nomeIncarico);
         cv.put(PERSON_ID, codFiscale);
 
         db.insert(TABLE_INCARICHI, null, cv);
 
         db.close();
 
+    }
+
+    public void removeIncarico(String incaricoId){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_INCARICHI, KEY_INCARICO+"=?", new String[]{incaricoId});
     }
 
     public Person getPerson(String personId){
@@ -127,6 +128,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return null;
     }
+
+
 
     public void getAllPersone(){
         String selectQuery = "SELECT * FROM " + TABLE_PERSONE;
@@ -160,11 +163,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             incarichi.clear();
             do{
                 Incarico incarico = new Incarico();
-                incarico.setNomeIncarico(cursor.getString(0));
-                incarico.setPerson(cursor.getString(1));
-
+                incarico.setIncaricoId(cursor.getString(0));
+                incarico.setNomeIncarico(cursor.getString(1));
+                incarico.setPerson(cursor.getString(2));
                 incarichi.add(incarico);
-                incarichiMap.put(incarico.getNomeIncarico().toLowerCase(), incarico);
+                incarichiMap.put(incarico.getIncaricoId(), incarico);
             } while (cursor.moveToNext());
         }
     }

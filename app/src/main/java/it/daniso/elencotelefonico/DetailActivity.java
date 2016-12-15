@@ -16,8 +16,7 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String nomeIncarico = getIntent().getStringExtra(MainActivity.INCARICO_ID);
-        Incarico incarico = incarichiMap.get(nomeIncarico.toLowerCase());
+        Incarico incarico = incarichiMap.get(getIntent().getStringExtra(MainActivity.INCARICO_ID));
 
         setTitle(incarico.getNomeIncarico());
         TextView nome_cognome = (TextView) findViewById(R.id.nome_cognomeTV);
