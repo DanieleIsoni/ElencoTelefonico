@@ -138,7 +138,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()){
             personeList.clear();
-            personeList.add(new Person(DEFAULT, "Select", "Item", "", ""));
+            personeList.add(new Person(DEFAULT, "Seleziona", "Dipendente", "", ""));
             do{
                 Person person = new Person();
                 person.setCodFiscale(cursor.getString(0));
