@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import static it.daniso.elencotelefonico.Incarico.incarichi;
 import static it.daniso.elencotelefonico.Incarico.incarichiMap;
