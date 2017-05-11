@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         menu.findItem(R.id.action_backup).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
            @Override
             public boolean onMenuItemClick(MenuItem menuItem){
-               verifyStoragePermissions(MainActivity.this);
+               verifyStoragePermissionsAndBackup(MainActivity.this);
 
                return false;
            }
@@ -155,7 +155,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void verifyStoragePermissions(Activity activity) {
+
+    //Verify if the app has the permission for reading/writing on storage, if not it requests the permission to the user, if it has the permissions execute the db_backup
+    public void verifyStoragePermissionsAndBackup(Activity activity) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //If the user gives permissions execute backup else disable the backup function
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {

@@ -190,6 +190,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    //Backup the database of the application
+
     public void backupDatabase(Activity thisActivity, Context context){
         final String inFileName = context.getDatabasePath(DATABASE_NAME).getPath();
         File dbFile = new File(inFileName);
