@@ -1,8 +1,12 @@
 package it.daniso.elencotelefonico;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -27,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String INCARICO_ID = "INCARICO_ID";
     public static final String DATA = "DATA";
     public static final int ADD_ITEM_REQUEST = 1;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private MenuItem backupMenu;
+
     IncaricoListAdapter adapter;
     ListView lv;
     DatabaseHandler db = new DatabaseHandler(this);
@@ -131,7 +142,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        backupMenu = menu.findItem(R.id.action_backup);
+
+        menu.findItem(R.id.action_backup).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+           @Override
+            public boolean onMenuItemClick(MenuItem menuItem){
+               verifyStoragePermissions(MainActivity.this);
+
+               return false;
+           }
+        });
         return true;
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        } else {
+            db.backupDatabase(MainActivity.this,getApplicationContext());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_EXTERNAL_STORAGE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    db.backupDatabase(MainActivity.this,getApplicationContext());
+
+                } else {
+
+                    backupMenu.setEnabled(false);
+                }
+        }
     }
 
     @Override

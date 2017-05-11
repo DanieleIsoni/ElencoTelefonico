@@ -1,12 +1,31 @@
 package it.daniso.elencotelefonico;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static it.daniso.elencotelefonico.Incarico.incarichi;
 import static it.daniso.elencotelefonico.Incarico.incarichiMap;
 import static it.daniso.elencotelefonico.Person.persone;
@@ -17,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     //Database Name
-    private static final String DATABASE_NAME = "ElencoTelefonicoDB";
+    private static final String DATABASE_NAME = "ElencoTelefonicoDB.db";
 
     //Incarichi tables name
     private static final String TABLE_INCARICHI = "incarichi";
@@ -169,5 +188,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 incarichiMap.put(incarico.getIncaricoId(), incarico);
             } while (cursor.moveToNext());
         }
+    }
+
+    public void backupDatabase(Activity thisActivity, Context context){
+        final String inFileName = context.getDatabasePath(DATABASE_NAME).getPath();
+        File dbFile = new File(inFileName);
+        try {
+            InputStream in = new FileInputStream(dbFile);
+
+            Calendar calendar = Calendar.getInstance();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
+            String todayDate = df.format(Calendar.getInstance().getTime());
+            String newDirName = Environment.getExternalStorageDirectory()+"/ElencoDB_Backup/";
+            String outFileName = todayDate+".db";
+            File newDir = new File(newDirName);
+            newDir.mkdirs();
+            File outFile = new File(newDir, outFileName);
+
+            OutputStream out = new FileOutputStream(outFile);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.flush();
+            out.close();
+            Toast.makeText(thisActivity,"Data backup saved in "+outFile.getPath(), Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
