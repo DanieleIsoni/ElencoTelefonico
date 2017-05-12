@@ -4,11 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -198,7 +200,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         try {
             InputStream in = new FileInputStream(dbFile);
 
-            Calendar calendar = Calendar.getInstance();
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
             String todayDate = df.format(Calendar.getInstance().getTime());
             String newDirName = Environment.getExternalStorageDirectory()+"/ElencoDB_Backup/";
@@ -226,4 +227,54 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
     }
+
+
+    public InputStream dbToRestore;
+
+    public void restoreDatabase(Activity thisActivity, Context context){
+
+        try {
+            final String outFileName = context.getDatabasePath(DATABASE_NAME).getPath();
+            File outDb = new File(outFileName);
+
+            OutputStream out = new FileOutputStream(outDb);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = dbToRestore.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            dbToRestore.close();
+            out.flush();
+            out.close();
+            Toast.makeText(thisActivity,"Data restored", Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void performFileSearch(Activity thisActivity) {
+
+        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+        // browser.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Filter to show only images, using the image MIME data type.
+        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+        // To search for all documents available via installed storage providers,
+        // it would be "*/*".
+        intent.setType("*/*");
+
+        thisActivity.startActivityForResult(intent, MainActivity.REQUEST_EXTERNAL_STORAGE_READ);
+    }
+
+
 }

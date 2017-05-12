@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -20,8 +21,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URI;
 import java.util.List;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static it.daniso.elencotelefonico.Incarico.incarichi;
 import static it.daniso.elencotelefonico.Incarico.incarichiMap;
 import static it.daniso.elencotelefonico.Person.persone;
@@ -31,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
     public static final String INCARICO_ID = "INCARICO_ID";
     public static final String DATA = "DATA";
     public static final int ADD_ITEM_REQUEST = 1;
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final int REQUEST_EXTERNAL_STORAGE_WRITE = 1;
+    public static final int REQUEST_EXTERNAL_STORAGE_READ = 2;
     private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            READ_EXTERNAL_STORAGE,
+            WRITE_EXTERNAL_STORAGE
     };
     private MenuItem backupMenu;
+    private MenuItem restoreMenu;
 
     IncaricoListAdapter adapter;
     ListView lv;
@@ -143,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         backupMenu = menu.findItem(R.id.action_backup);
-
         menu.findItem(R.id.action_backup).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
            @Override
             public boolean onMenuItemClick(MenuItem menuItem){
@@ -152,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
                return false;
            }
         });
+
+        restoreMenu = menu.findItem(R.id.action_restore);
+        menu.findItem(R.id.action_restore).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem){
+                verifyStoragePermissionsAndRestore(MainActivity.this);
+
+                return false;
+            }
+        });
         return true;
     }
 
@@ -159,17 +176,33 @@ public class MainActivity extends AppCompatActivity {
     //Verify if the app has the permission for reading/writing on storage, if not it requests the permission to the user, if it has the permissions execute the db_backup
     public void verifyStoragePermissionsAndBackup(Activity activity) {
         // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission = ActivityCompat.checkSelfPermission(activity, WRITE_EXTERNAL_STORAGE);
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(
                     activity,
                     PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
+                    REQUEST_EXTERNAL_STORAGE_WRITE
             );
         } else {
             db.backupDatabase(MainActivity.this,getApplicationContext());
+        }
+    }
+
+    public void verifyStoragePermissionsAndRestore(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, READ_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE_READ
+            );
+        } else {
+            db.performFileSearch(MainActivity.this);
         }
     }
 
@@ -178,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_EXTERNAL_STORAGE:
+            case REQUEST_EXTERNAL_STORAGE_WRITE:
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -186,8 +219,17 @@ public class MainActivity extends AppCompatActivity {
                     db.backupDatabase(MainActivity.this,getApplicationContext());
 
                 } else {
-
                     backupMenu.setEnabled(false);
+                    backupMenu.setVisible(false);
+                }
+            case REQUEST_EXTERNAL_STORAGE_READ:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    db.performFileSearch(this);
+
+                } else {
+                    restoreMenu.setEnabled(false);
+                    restoreMenu.setVisible(false);
                 }
         }
     }
@@ -211,6 +253,25 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this,"Non tutti i campi sono stati compilati", Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == MainActivity.REQUEST_EXTERNAL_STORAGE_READ && resultCode == Activity.RESULT_OK) {
+            // The document selected by the user won't be returned in the intent.
+            // Instead, a URI to that document will be contained in the return intent
+            // provided to this method as a parameter.
+            // Pull that URI using resultData.getData().
+            Uri uri = null;
+            if (data != null) {
+                uri = data.getData();
+                try {
+                    db.dbToRestore = getContentResolver().openInputStream(uri);
+                    db.restoreDatabase(MainActivity.this,getApplicationContext());
+                    db.getAllPersone();
+                    db.getAllIncarichi();
+                    adapter.myNotifyDataSetChanged();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
 }
