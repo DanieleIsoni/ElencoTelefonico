@@ -47,9 +47,6 @@ public class AddActivity extends AppCompatActivity {
         telNum = (EditText) findViewById(R.id.inputTelNum);
         email = (EditText) findViewById(R.id.inputEmail);
 
-        telNum.setText("+39 0461 9 ");
-        email.setText("@comalp.esercito.difesa.it");
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -64,8 +61,8 @@ public class AddActivity extends AppCompatActivity {
                     codFiscale.setText("");
                     name.setText("");
                     surname.setText("");
-                    telNum.setText("+39 0461 9 ");
-                    email.setText("@comalp.esercito.difesa.it");
+                    telNum.setText("");
+                    email.setText("");
                 }
             }
             @Override

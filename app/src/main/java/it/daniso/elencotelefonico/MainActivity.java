@@ -60,10 +60,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         this.savedInstance = savedInstanceState;
 
-        //db.insertPerson("snidnl96m21l378n", "Daniele", "Isoni", "44400", "ciao");
         db.getAllPersone();
 
-        //db.insertIncarico("Lavoro", "snidnl96m21l378n");
         db.getAllIncarichi();
 
 

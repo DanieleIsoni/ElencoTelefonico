@@ -9,6 +9,6 @@
     <string name="nome_persona">Nome</string>
     <string name="cognome_persona">Cognome</string>
     <string name="tel_num_persona">Numero telefonico</string>
-    <string name="email_persona">e-mail</string>
+    <string name="email_persona">e-Mail</string>
     <string name="cod_fiscale_persona">Codice Fiscale</string>
 </resources>
