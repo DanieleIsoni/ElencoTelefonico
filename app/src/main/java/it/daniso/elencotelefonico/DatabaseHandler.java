@@ -1,19 +1,14 @@
 package it.daniso.elencotelefonico;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,7 +22,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static it.daniso.elencotelefonico.Incarico.incarichi;
 import static it.daniso.elencotelefonico.Incarico.incarichiMap;
 import static it.daniso.elencotelefonico.Person.persone;
